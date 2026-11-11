@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../socialmedia.dart';
+import '/socialmedia.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -9,14 +9,14 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  late String errorMessage;
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  late String errormessage;
   late bool isError;
 
   @override
   void initState() {
-    errorMessage = 'This is error message';
+    errormessage = 'This is an error message';
     isError = false;
     super.initState();
   }
@@ -28,16 +28,16 @@ class _LoginFormState extends State<LoginForm> {
     super.dispose();
   }
 
-  void checklogin(String username, String password) {
+  void checkLogin(String username, String password) {
     setState(() {
-      if (username == "") {
-        errorMessage = "Please input your username";
+      if (username == '') {
+        errormessage = 'Please input your username!';
         isError = true;
-      } else if (password == "") {
-        errorMessage = "Please input your password";
+      } else if (password == '') {
+        errormessage = 'Please input your password!';
         isError = true;
       } else {
-        errorMessage = "";
+        errormessage = '';
         isError = false;
       }
     });
@@ -47,91 +47,90 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 25),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/yzz.png',
-                    height: 150,
-                    width: 150,
-                  ),
-                  const SizedBox(width: 12),
-                  Text("YJiZZ", style: txtStyle),
-                ],
-              ),
-              const SizedBox(height: 15),
-              TextField(
-                controller: usernameController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Enter Username',
-                  prefixIcon: Icon(Icons.person),
+       child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 25),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/yzz.png',
+                  height: 48,
+                  width: 48,
                 ),
+                const SizedBox(width: 12),
+                Text('Yjizz', style: txtstyle)
+              ],
+            ),  
+            SizedBox(height: 15),
+            TextField(
+              controller: usernameController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Enter Username',
+                prefixIcon: Icon(Icons.person),
               ),
-              const SizedBox(height: 15),
-              TextField(
-                controller: passwordController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Enter Password',
-                  prefixIcon: Icon(Icons.password),
-                ),
+            ),
+            const SizedBox(height: 15),
+            TextField(
+              controller: passwordController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Enter Password',
+                prefixIcon: Icon(Icons.password),
               ),
-              const SizedBox(height: 15),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 50),
-                  backgroundColor: Colors.blue,
-                ),
-                onPressed: () {
-                  checklogin(usernameController.text, passwordController.text);
-                  if (!isError) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SocialMedia(),
-                      ),
-                    );
-                  }
-                },
-                child: Text("Login", style: txtStyle2),
+            ),
+            SizedBox(height: 15),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size.fromHeight(50),
+                backgroundColor: Colors.blue,
               ),
-              const SizedBox(height: 15),
-            ],
-          ),
+
+              onPressed: () {
+                checkLogin(usernameController.text, passwordController.text);
+                if (!isError) {
+                  Navigator.push(context,
+                  MaterialPageRoute(builder: (context)=> Socialmedia()),
+                  );
+                }
+              },
+              child: Text('LOGIN', style: txtstyle2),
+            ),
+            SizedBox(height: 15)
+          ],
+
         ),
+       ), 
       ),
     );
   }
 }
 
-var txtStyle = const TextStyle(
+TextStyle txtstyle = const TextStyle(
   fontWeight: FontWeight.bold,
   letterSpacing: 2,
   fontSize: 14,
 );
 
-var registertxtStyle = const TextStyle(
+TextStyle registertxtstyle = const TextStyle(
   fontWeight: FontWeight.bold,
   letterSpacing: 2,
   fontSize: 14,
 );
 
-var errortxtStyle = const TextStyle(
+TextStyle errortxtstyle = const TextStyle(
   fontWeight: FontWeight.bold,
   letterSpacing: 2,
   fontSize: 14,
   color: Colors.red,
 );
 
-var txtStyle2 = const TextStyle(
+TextStyle txtstyle2 = const TextStyle(
   fontWeight: FontWeight.bold,
   letterSpacing: 2,
-  fontSize: 14,
+  fontSize: 24,
   color: Colors.white,
 );

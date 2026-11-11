@@ -4,9 +4,7 @@ import '/model/userdata.dart';
 class Mainheader extends StatelessWidget {
   const Mainheader({super.key, required this.userdata});
 
-  final UserData userdata;
-
-  
+  final Userdata userdata;
 
   @override
   Widget build(BuildContext context) {
@@ -16,17 +14,19 @@ class Mainheader extends StatelessWidget {
           backgroundImage: AssetImage(userdata.myUserAccount.img),
           radius: 40,
         ),
+        const SizedBox(height: 10),
         Text(
           userdata.myUserAccount.name,
           style: const TextStyle(
-            fontSize: 20,
+            fontSize: 24,
             fontWeight: FontWeight.bold,
-            letterSpacing: 2,
+            letterSpacing: 1,
           ),
         ),
+        const SizedBox(height: 4), 
         Text(userdata.myUserAccount.email),
         const SizedBox(height: 20),
-      ]
+      ],
     );
   }
 }

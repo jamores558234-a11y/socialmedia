@@ -6,20 +6,30 @@ import '/views/profile.view.dart';
 class Postlist extends StatefulWidget {
   const Postlist({super.key, required this.userdata});
 
-  final UserData userdata;
+  final Userdata userdata;
 
   @override
   State<Postlist> createState() => _PostlistState();
 }
 
 class _PostlistState extends State<Postlist> {
-  var nametxtStyle = const TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
+  var nametxtStyle = const TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+  );
 
-  void gotoPage(BuildContext context, Widget page) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => page));
+  Future<void> gotoPage(Userpost userPost) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProfileView(userPost: userPost),
+      ),
+    );
+
+    setState(() {});
   }
 
-  Widget buttons(UserPost userPost) => Row(
+  Widget buttons(Userpost userPost) => Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
       TextButton.icon(
@@ -34,19 +44,22 @@ class _PostlistState extends State<Postlist> {
         icon: const Icon(Icons.thumb_up),
         label: const Text('Like'),
       ),
+
       TextButton.icon(
-        style: TextButton.styleFrom(foregroundColor: Colors.grey),
+        style: TextButton.styleFrom(
+          foregroundColor: Colors.grey,
+        ),
         onPressed: () {
-          gotoPage(
-            context,
-            ProfileView(userdata: widget.userdata, userposts: userPost),
-          );
+          gotoPage(userPost);
         },
         icon: const Icon(Icons.message),
         label: const Text('Comment'),
       ),
+
       TextButton.icon(
-        style: TextButton.styleFrom(foregroundColor: Colors.grey),
+        style: TextButton.styleFrom(
+          foregroundColor: Colors.grey,
+        ),
         onPressed: () {},
         icon: const Icon(Icons.share),
         label: const Text('Share'),
@@ -54,63 +67,45 @@ class _PostlistState extends State<Postlist> {
     ],
   );
 
-  Widget postCount(UserPost userPost) => Row(
+  Widget postCount(Userpost userPost) => Row(
     mainAxisAlignment: MainAxisAlignment.end,
     children: [
-      TextButton(
-        onPressed: () {
-          gotoPage(
-            context,
-            ProfileView(userdata: widget.userdata, userposts: userPost),
-          );
-        },
-        child: const Text('Comments'),
-      ),
-      const Text(''),
+      Text('${userPost.totalCommentCount} Comments'),
       const SizedBox(width: 20),
       Text('${userPost.numshare} Shares'),
     ],
   );
 
-  Widget postImage(UserPost userPost) => Padding(
+  Widget postImage(Userpost userPost) => Padding(
     padding: const EdgeInsets.symmetric(vertical: 10),
     child: Container(
       height: 350,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(userPost.userpostimg),
+          image: AssetImage(userPost.postimg),
           fit: BoxFit.fill,
         ),
       ),
     ),
   );
 
-  Widget postHeader(UserPost userPost) => Row(
+  Widget postHeader(Userpost userPost) => Row(
     crossAxisAlignment: CrossAxisAlignment.start,
-    mainAxisAlignment: MainAxisAlignment.start,
     children: [
-      Padding(
+      Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: ClipOval(
-          child: SizedBox(
-            width: 40,
-            height: 40,
-            child: Image.asset(
-              userPost.userimg,
-              fit: BoxFit.cover,
-              alignment: Alignment.topCenter,
-            ),
-          ),
+        child: CircleAvatar(
+          radius: 20,
+          backgroundImage: AssetImage(userPost.userimg),
         ),
       ),
       Column(
-        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(userPost.username, style: nametxtStyle),
           Row(
             children: [
-              Text('${userPost.usertime} · '),
+              Text('${userPost.time} · '),
               const Icon(Icons.people, size: 18),
             ],
           ),
@@ -119,43 +114,45 @@ class _PostlistState extends State<Postlist> {
     ],
   );
 
-  Widget showPost(UserPost userPost) => Column(
+  Widget showPost(Userpost userPost) => Column(
     children: [
       postHeader(userPost),
       Container(
         margin: const EdgeInsets.all(8),
-        child: Row(children: [Text(userPost.usercontent, style: nametxtStyle)]),
+        child: Row(
+          children: [
+            Text(userPost.postcontent, style: nametxtStyle),
+          ],
+        ),
       ),
       postImage(userPost),
       postCount(userPost),
       const Divider(),
       buttons(userPost),
-      SizedBox(height: 10, child: Container(color: Colors.grey)),
+      SizedBox(
+        height: 10,
+        child: Container(color: Colors.grey),
+      ),
       const SizedBox(height: 15),
     ],
   );
 
   @override
   Widget build(BuildContext context) {
-    final userPosts = widget.userdata.userlist.cast<UserPost>();
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: widget.userdata.userList.length,
+      itemBuilder: (context, index) {
+        Userpost userPost = widget.userdata.userList[index];
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: ListView(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        children: userPosts.map((userPost) {
-          return InkWell(
-            onTap: () {
-              gotoPage(
-                context,
-                ProfileView(userdata: widget.userdata, userposts: userPost),
-              );
-            },
-            child: showPost(userPost),
-          );
-        }).toList(),
-      ),
+        return InkWell(
+          onTap: () {
+            gotoPage(userPost);
+          },
+          child: showPost(userPost),
+        );
+      },
     );
   }
 }

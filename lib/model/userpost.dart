@@ -1,31 +1,32 @@
-import 'usercomment.dart';
+import '/model/usercomment.dart';
 
-class UserPost {
+class Userpost {
   final String userimg;
   final String username;
-  final String usertime;
-  final String usercontent;
-  final String userpostimg;
+  final String time;
+  final String postcontent;
+  final String postimg;
+  final String numcomments;
   final String numshare;
+
   bool isLiked;
-  final List<Usercomment> comments;
 
-  int get commentCount {
-    int countThread(Usercomment comment) =>
-        1 +
-        comment.replies.fold(0, (count, reply) => count + countThread(reply));
+  List<Usercomment> comments;
+  int addedCommentCount = 0;
 
-    return comments.fold(0, (count, comment) => count + countThread(comment));
-  }
-
-  UserPost({
+  Userpost({
     required this.userimg,
     required this.username,
-    required this.usertime,
-    required this.usercontent,
-    required this.userpostimg,
+    required this.time,
+    required this.postcontent,
+    required this.postimg,
+    required this.numcomments,
     required this.numshare,
     required this.isLiked,
-    required this.comments,
-  });
+    List<Usercomment>? comments,
+  }) : comments = comments ?? [];
+
+  int get totalCommentCount {
+    return comments.length;
+  }
 }

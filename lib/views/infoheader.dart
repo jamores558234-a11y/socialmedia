@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import '/model/userdata.dart';
 
-class InfoHeader extends StatelessWidget {
-  const InfoHeader({super.key, required this.userdata});
+class Infoheader extends StatelessWidget {
+  const Infoheader({super.key, required this.userdata});
 
-  final UserData userdata;
+  final Userdata userdata;
 
-  final followTxtStyle = const TextStyle(
-    fontSize: 16,
+  final TextStyle followTxtstyle = const TextStyle(
+    fontSize: 20,
     fontWeight: FontWeight.bold,
   );
 
@@ -15,25 +15,17 @@ class InfoHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('Followers'),
-            const SizedBox(width: 10),
-            const Text('Following'),
-            const SizedBox(width: 10),
-            const Text('Posts'),
-          ],
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [Text('Followers'), Text('Following'), Text('Posts')],
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text(userdata.myUserAccount.numFollowers, style: followTxtStyle),
-            const SizedBox(width: 40),
-            Text(userdata.myUserAccount.numFollowing, style: followTxtStyle),
-            const SizedBox(width: 50),
-            Text(userdata.myUserAccount.numPosts, style: followTxtStyle),
-          ],
+            Text(userdata.myUserAccount.numFollowers, style: followTxtstyle),
+            Text(userdata.myUserAccount.numFollowing, style: followTxtstyle),
+            Text(userdata.myUserAccount.numPosts, style: followTxtstyle),
+            ],
         ),
         const SizedBox(height: 10),
         const Divider(color: Colors.grey),
